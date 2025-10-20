@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Minhkiot - Đăng nhập</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+  <body>
+    <div class="login-container"> 
+        <h1>Đăng nhập hệ thống</h1>
+        <form id="loginForm">
+          <div class="inputinf">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="inputinf">
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit">Đăng Nhập</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const messageDiv = document.getElementById('message');
+
+        // Đọc từ localStorage trước
+        const usersData = localStorage.getItem('users');
+        if (usersData) {
+          const userLines = JSON.parse(usersData);
+          authenticateUser(username, password, userLines, messageDiv);
+        } else {
+          // Nếu không có trong localStorage, fetch từ file usepass.txt
+          fetch('./usepass.txt')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Không thể tải file usepass.txt');
+              }
+              return response.text();
+            })
+            .then(data => {
+              const userLines = data.split('\n').filter(line => line.trim() !== '');
+              localStorage.setItem('users', JSON.stringify(userLines)); // Lưu vào localStorage
+              authenticateUser(username, password, userLines, messageDiv);
+            })
+            .catch(error => {
+              console.error('Lỗi:', error);
+              messageDiv.innerHTML = '<p style="color: red;">Không có dữ liệu người dùng!</p>';
+            });
+        }
+      });
+
+      function authenticateUser(username, password, userLines, messageDiv) {
+        let authenticated = false;
+        let userRole = 'customer'; // Mặc định là customer
+
+        for (let line of userLines) {
+          line = line.trim();
+          if (line) {
+            const parts = line.split(':');
+            const user = parts[0];
+            const pass = parts[1];
+            const role = parts[2] || 'customer'; // Nếu không có role thì mặc định customer
+
+            if (username === user && password === pass) {
+              authenticated = true;
+              userRole = role;
+              break;
+            }
+          }
+        }
+
+        if (authenticated) {
+          messageDiv.innerHTML = '<p style="color: green;">Đăng nhập thành công!</p>';
+          localStorage.setItem('loggedInUser', username);
+
+          setTimeout(() => {
+            switch(userRole) {
+              case 'admin':
+                window.location.href = './admin.html';
+                break;
+              case 'manager':
+                window.location.href = './manager.html';
+                break;
+              case 'cashier':
+                window.location.href = './cashier.html';
+                break;
+              case 'customer':
+                window.location.href = './customer.html';
+                break;
+              default:
+                window.location.href = './dashboard.html';
+            }
+          }, 1000);
+        } else {
+          messageDiv.innerHTML = '<p style="color: red;">Tên đăng nhập hoặc mật khẩu không đúng!</p>';
+        }
+      }
+    </script>
+  </body>
+</html>
