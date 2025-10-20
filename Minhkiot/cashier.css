@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+}
+
+/* ĐÃ XÓA .login-container */
+
+/* Ứng dụng chính */
+.main-app {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    background: white;
+    margin: 0 auto; /* Căn giữa nếu muốn */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.main-app header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+}
+.main-app header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* ĐÃ XÓA #logoutBtn */
+
+/* Danh sách đơn hàng */
+.order-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+}
+.order-card {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.order-card h3 {
+    margin-top: 0;
+    color: #007bff;
+}
+.order-card ul {
+    padding-left: 20px;
+    font-size: 0.9rem;
+}
+.order-card li {
+    margin-bottom: 0.5rem;
+}
+.order-card i {
+    color: #e67e22;
+}
+.complete-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+.complete-btn:hover {
+    background-color: #218838;
+}

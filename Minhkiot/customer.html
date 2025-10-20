@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Trang Đặt Món</title>
+    <link rel="stylesheet" href="customer.css">
+</head>
+<body>
+    <!-- Language Selection Screen -->
+    <div id="languageSelection" class="language-selection-screen">
+        <div class="language-selection-content">
+            <h1>Chọn Ngôn Ngữ / Choose Language / Valitse Kieli</h1>
+            <div class="language-buttons">
+                <button class="language-btn" data-lang="vi">Tiếng Việt</button>
+                <button class="language-btn" data-lang="en">English</button>
+                <button class="language-btn" data-lang="fi">Suomi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContainer" style="display: none;">
+        <div class="header">
+            <div class="restaurant-name" id="restaurantName">Minhkiot</div>
+            <div class="language-selector">
+                <label for="languageSelect">Ngôn ngữ:</label>
+                <select id="languageSelect">
+                    <option value="vi">Tiếng Việt</option>
+                    <option value="en">English</option>
+                    <option value="fi">Suomi</option>
+                </select>
+            </div>
+            <button class="fullscreen-btn" onclick="toggleFullscreen()">Toàn màn hình</button>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="categories-section">
+            <h2 class="section-title" id="categoriesTitle">Danh Mục Món Ăn</h2>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="products-section">
+            <h2 class="section-title" id="productsTitle">Thực Đơn</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+        <div class="cart-section">
+            <h2 class="section-title" id="cartTitle">Giỏ Hàng</h2>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="cart-total" id="cartTotal">Tổng: 0đ</div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="showOrderReview()">Đặt Món</button>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productDetailModal" class="modal-overlay">
+        <div class="modal product-detail-modal">
+            <div class="modal-header">
+                <h2 id="productDetailName"></h2>
+                <button class="modal-close" onclick="closeProductDetail()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-detail-content">
+                    <img id="productDetailImage" class="product-detail-image" src="" alt="">
+                    <div class="product-detail-info">
+                        <div class="product-detail-price" id="productDetailPrice"></div>
+                        <div class="product-detail-ingredients" id="productDetailIngredients"></div>
+                        <input type="text" class="note-input" id="productDetailNote" placeholder="Ghi chú đặc biệt">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn add-to-cart-btn" onclick="addProductToCartFromDetail()" id="addToCartDetailBtn">Thêm vào giỏ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Review Modal -->
+    <div id="orderReviewModal" class="modal-overlay">
+        <div class="modal order-review-modal">
+            <div class="modal-header">
+                <h2 id="orderReviewTitle">Xem lại đơn hàng</h2>
+                <button class="modal-close" onclick="closeOrderReview()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="orderReviewContent"></div>
+                <div class="payment-methods">
+                    <h3 id="paymentMethodTitle">Phương thức thanh toán</h3>
+                    <select id="paymentMethod" class="payment-select">
+                        <option value="">Chọn phương thức thanh toán</option>
+                        <option value="cash">Tiền mặt</option>
+                        <option value="card">Thẻ ngân hàng</option>
+                        <option value="edenred">Edenred</option>
+                        <option value="epassi">E-Passi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" onclick="closeOrderReview()" id="cancelOrderBtn">Hủy</button>
+                <button class="modal-btn confirm-btn" onclick="confirmOrder()" id="confirmOrderBtn">Xác nhận đặt món</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="customer.js"></script>
+</body>
+</html>

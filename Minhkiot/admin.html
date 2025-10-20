@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang Quản Trị</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="runner-character"></div>
+        <div class="loading-text">Đang tải...</div>
+        <div class="loading-progress"></div>
+    </div>
+
+    <!-- Custom Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Modal Dialog -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal">
+            <h3>Xác nhận hành động</h3>
+            <div id="modalMessage" class="modal-message"></div>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Đồng ý</button>
+                <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">Admin Dashboard</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showTab('users')">Quản lý Users</a></li>
+            <li><a href="#" onclick="showTab('products')">Sản phẩm</a></li>
+            <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="container"> 
+            <h1>Trang Quản Trị</h1>
+            
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="showTab('users')">Quản lý Người dùng</button>
+                <button class="tab-btn" onclick="showTab('products')">Quản lý Sản phẩm</button>
+            </div>
+
+            <!-- Tab Quản lý Users -->
+            <div id="users" class="tab-content active">
+                <!-- Form tạo tài khoản mới với phân quyền -->
+                <form id="createUserForm">
+                    <h2>Tạo tài khoản người dùng mới</h2>
+                    <div class="input-group">
+                        <label for="newUsername">Tên đăng nhập mới:</label>
+                        <input type="text" id="newUsername" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newPassword">Mật khẩu mới:</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="userRole">Phân quyền:</label>
+                        <select id="userRole" required>
+                            <option value="">Chọn quyền</option>
+                            <option value="admin">Quản trị viên (Admin)</option>
+                            <option value="manager">Quản lý (Manager)</option>
+                            <option value="cashier">Thu ngân (Cashier)</option>
+                            <option value="customer">Khách hàng (Customer)</option>
+                        </select>
+                    </div>
+                    <button type="submit">Tạo Tài Khoản</button>
+                </form>
+
+                <!-- Danh sách tài khoản hiện tại -->
+                <div class="user-management">
+                    <h2>Danh sách tài khoản</h2>
+                    <div id="userList"></div>
+                    <button id="refreshUsers">Làm mới danh sách</button>
+                </div>
+            </div>
+
+            <!-- Tab Quản lý Sản phẩm -->
+            <div id="products" class="tab-content">
+                <!-- Thống kê sản phẩm -->
+                <div class="stats-box">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalProducts">0</div>
+                        <div class="stat-label">Tổng số món</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCategories">0</div>
+                        <div class="stat-label">Số loại món</div>
+                    </div>
+                </div>
+
+                <!-- Form thêm sản phẩm -->
+                <form id="productForm" enctype="multipart/form-data">
+                    <h2>Thêm món ăn mới</h2>
+                    <div class="input-group">
+                        <label>Tên món ăn (Tiếng Việt):</label>
+                        <input type="text" id="name-vi" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Tên món ăn (Tiếng Anh):</label>
+                        <input type="text" id="name-en" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Tên món ăn (Tiếng Phần Lan):</label>
+                        <input type="text" id="name-fi" required>
+                    </div>
+                    
+                    <!-- Phần nhập giá tiền -->
+                    <div class="input-group">
+                        <label>Giá tiền:</label>
+                        <div class="price-input-container">
+                            <input type="number" id="price" min="0" step="0.01" required>
+                            <select id="currency" required>
+                                <option value="€">Euro (€)</option>
+                                <option value="$">Dollar ($)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Loại thức ăn:</label>
+                        <div class="category-input-container">
+                            <select id="category" required>
+                                <option value="">Chọn loại</option>
+                                <option value="nước">Nước</option>
+                                <option value="xào">Xào</option>
+                                <option value="đặc sản">Đặc sản</option>
+                                <option value="khai vị">Khai vị</option>
+                                <option value="món chính">Món chính</option>
+                                <option value="tráng miệng">Tráng miệng</option>
+                                <option value="súp">Súp</option>
+                            </select>
+                            <button type="button" class="add-category-btn" onclick="showAddCategoryModal()">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Thành phần món ăn (Tiếng Việt):</label>
+                        <textarea id="ingredients-vi" rows="4" placeholder="Liệt kê các thành phần, cách nhau bằng dấu phẩy"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Thành phần món ăn (Tiếng Anh):</label>
+                        <textarea id="ingredients-en" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Thành phần món ăn (Tiếng Phần Lan):</label>
+                        <textarea id="ingredients-fi" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Hình ảnh món ăn:</label>
+                        <input type="file" id="image" accept="image/*">
+                    </div>
+                    
+                    <button type="submit">Thêm Món Ăn</button>
+                </form>
+
+                <!-- Tìm kiếm và lọc sản phẩm -->
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="searchProducts()">
+                    <select id="category-filter" onchange="filterProducts()">
+                        <option value="">Tất cả loại</option>
+                        <option value="nước">Nước</option>
+                        <option value="xào">Xào</option>
+                        <option value="đặc sản">Đặc sản</option>
+                        <option value="khai vị">Khai vị</option>
+                        <option value="món chính">Món chính</option>
+                        <option value="tráng miệng">Tráng miệng</option>
+                        <option value="súp">Súp</option>
+                    </select>
+                </div>
+
+                <!-- Danh sách sản phẩm -->
+                <div class="product-management">
+                    <h2>Danh sách món ăn hiện có</h2>
+                    <div id="products-list" class="products-grid">
+                        <!-- Sản phẩm sẽ được hiển thị ở đây -->
+                    </div>
+                    <button onclick="loadProducts()">Làm mới danh sách</button>
+                    <button onclick="exportMenu()" style="margin-left: 10px; background: linear-gradient(45deg, #ffd700, #ff8c00);">Xuất Menu</button>
+                    <button onclick="importMenu()" style="margin-left: 10px; background: linear-gradient(45deg, #00ffff, #0080ff);">Nhập Menu</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCh1zPuWrZ6g3UHQPJeahp--96vHoiRB-k",
+            authDomain: "minhkiot-7f5d6.firebaseapp.com",
+            projectId: "minhkiot-7f5d6",
+            storageBucket: "minhkiot-7f5d6.firebasestorage.app",
+            messagingSenderId: "25045319035",
+            appId: "1:25045319035:web:30e7e5d07dc3a75c8411de",
+            measurementId: "G-FZHVBC1NFG"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Cấu hình Cerebras API
+        const CEREBRAS_API_KEY = "csk-rv8v6r5vevr2pxmw8h9nprtv3nty525wc6m3xw2rykxfmc4f";
+        
+        // Biến toàn cục để lưu trữ menu JSON
+        let menuData = [];
+        let currentEditingProductId = null;
+
+        // Hiển thị loading và chuyển trang
+        function showLoadingAndNavigate(url) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.remove('hidden');
+            
+            setTimeout(() => {
+                window.location.href = url;
+            }, 500);
+        }
+
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            showNotification('Đăng xuất thành công!', 'success');
+            setTimeout(() => {
+                showLoadingAndNavigate('index.html');
+            }, 1000);
+        }
+
+        // Hiển thị tab
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            if (tabId === 'products') {
+                updateProductStats();
+                displayProducts();
+            }
+        }
+
+        // Hiển thị thông báo custom
+        function showNotification(message, type = 'info') {
+            const notificationContainer = document.getElementById('notificationContainer');
+            const notificationId = 'notification_' + Date.now();
+            const icons = {
+                success: '✓',
+                error: '✗',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+            const notification = document.createElement('div');
+            notification.id = notificationId;
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-icon">${icons[type] || 'ℹ'}</span>
+                    <span class="notification-message">${message}</span>
+                    <button class="notification-close" onclick="closeNotification('${notificationId}')">&times;</button>
+                </div>
+            `;
+            notificationContainer.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => closeNotification(notificationId), 5000);
+        }
+
+        // Đóng thông báo
+        function closeNotification(id) {
+            const notification = document.getElementById(id);
+            if (notification) {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }
+        }
+
+        // Hiển thị modal dialog
+        function showModal(message, onConfirm) {
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalMessage = document.getElementById('modalMessage');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            
+            modalMessage.textContent = message;
+            modalOverlay.classList.add('show');
+            
+            confirmBtn.onclick = function() {
+                modalOverlay.classList.remove('show');
+                if (onConfirm) onConfirm();
+            };
+            
+            cancelBtn.onclick = function() {
+                modalOverlay.classList.remove('show');
+            };
+            
+            modalOverlay.onclick = function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('show');
+                }
+            };
+        }
+
+        // Hàm gọi Cerebras API để dịch văn bản
+        async function translateWithCerebras(text, targetLanguage) {
+            if (!text.trim()) return text;
+            
+            const languageMap = {
+                'en': 'English',
+                'fi': 'Finnish'
+            };
+            
+            const targetLang = languageMap[targetLanguage] || targetLanguage;
+            const prompt = `Translate the following Vietnamese text to ${targetLang}. Only provide the translation, nothing else: "${text}"`;
+            
+            try {
+                const response = await fetch('https://api.cerebras.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${CEREBRAS_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "llama3.1-8b",
+                        messages: [{ role: "user", content: prompt }],
+                        temperature: 0.1,
+                        max_tokens: 1000
+                    })
+                });
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                return data.choices[0].message.content.trim();
+            } catch (error) {
+                console.error('Lỗi dịch thuật:', error);
+                showNotification(`Lỗi khi dịch sang ${targetLang}: ${error.message}`, 'error');
+                return text;
+            }
+        }
+
+        // Hiển thị modal thêm loại thức ăn
+        function showAddCategoryModal() {
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalMessage = document.getElementById('modalMessage');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            
+            modalMessage.innerHTML = `
+                <div class="input-group">
+                    <label for="newCategory">Tên loại thức ăn mới (Tiếng Việt):</label>
+                    <input type="text" id="newCategory" placeholder="Ví dụ: Món nướng" required>
+                </div>
+                <div class="input-group">
+                    <label for="newCategoryEn">Tên tiếng Anh:</label>
+                    <input type="text" id="newCategoryEn" required>
+                </div>
+                <div class="input-group">
+                    <label for="newCategoryFi">Tên tiếng Phần Lan:</label>
+                    <input type="text" id="newCategoryFi" required>
+                </div>
+            `;
+            
+            const newCategoryInput = document.getElementById('newCategory');
+            const newCategoryEnInput = document.getElementById('newCategoryEn');
+            const newCategoryFiInput = document.getElementById('newCategoryFi');
+            
+            newCategoryInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.value.trim()) {
+                        newCategoryEnInput.value = 'Đang dịch...';
+                        newCategoryFiInput.value = 'Đang dịch...';
+                        
+                        const enTranslation = await translateWithCerebras(this.value, 'en');
+                        const fiTranslation = await translateWithCerebras(this.value, 'fi');
+                        
+                        newCategoryEnInput.value = enTranslation;
+                        newCategoryFiInput.value = fiTranslation;
+                    }
+                }
+            });
+            
+            confirmBtn.onclick = function() {
+                const newCategory = document.getElementById('newCategory').value.trim();
+                const newCategoryEn = document.getElementById('newCategoryEn').value.trim();
+                const newCategoryFi = document.getElementById('newCategoryFi').value.trim();
+                
+                if (newCategory && newCategoryEn && newCategoryFi) {
+                    addNewCategory(newCategory);
+                    modalOverlay.classList.remove('show');
+                } else {
+                    showNotification('Vui lòng nhập đầy đủ thông tin và dịch!', 'warning');
+                }
+            };
+            
+            cancelBtn.onclick = function() {
+                modalOverlay.classList.remove('show');
+            };
+            
+            modalOverlay.onclick = function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('show');
+                }
+            };
+            
+            modalOverlay.classList.add('show');
+        }
+
+        // Thêm loại thức ăn mới vào danh sách
+        function addNewCategory(categoryName) {
+            const categorySelect = document.getElementById('category');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            const existingOptions = Array.from(categorySelect.options);
+            const categoryExists = existingOptions.some(option => option.value === categoryName);
+            
+            if (!categoryExists) {
+                const newOption = document.createElement('option');
+                newOption.value = categoryName;
+                newOption.textContent = categoryName;
+                categorySelect.appendChild(newOption);
+                
+                const newFilterOption = document.createElement('option');
+                newFilterOption.value = categoryName;
+                newFilterOption.textContent = categoryName;
+                categoryFilter.appendChild(newFilterOption);
+                
+                showNotification(`Đã thêm loại "${categoryName}" thành công!`, 'success');
+            } else {
+                showNotification('Loại thức ăn này đã tồn tại!', 'warning');
+            }
+        }
+
+        // Dịch tên món ăn khi nhấn Enter
+        async function translateDishNameOnEnter() {
+            const nameViInput = document.getElementById('name-vi');
+            const nameEnInput = document.getElementById('name-en');
+            const nameFiInput = document.getElementById('name-fi');
+            
+            nameViInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const vietnameseName = this.value.trim();
+                    if (vietnameseName) {
+                        nameEnInput.value = 'Đang dịch...';
+                        nameFiInput.value = 'Đang dịch...';
+                        
+                        const translations = await translateDishName(vietnameseName);
+                        nameEnInput.value = translations.en;
+                        nameFiInput.value = translations.fi;
+                    }
+                }
+            });
+        }
+
+        // Dịch thành phần món ăn khi nhấn Enter
+        async function translateIngredientsOnEnter() {
+            const ingredientsViInput = document.getElementById('ingredients-vi');
+            const ingredientsEnInput = document.getElementById('ingredients-en');
+            const ingredientsFiInput = document.getElementById('ingredients-fi');
+            
+            ingredientsViInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const vietnameseIngredients = this.value.trim();
+                    if (vietnameseIngredients) {
+                        ingredientsEnInput.value = 'Đang dịch...';
+                        ingredientsFiInput.value = 'Đang dịch...';
+                        
+                        const translations = await translateIngredients(vietnameseIngredients);
+                        ingredientsEnInput.value = translations.en;
+                        ingredientsFiInput.value = translations.fi;
+                    }
+                }
+            });
+        }
+
+        // Dịch tên món ăn bằng Cerebras API
+        async function translateDishName(vietnameseName) {
+            if (!vietnameseName.trim()) {
+                return { en: '', fi: '' };
+            }
+            
+            try {
+                const enTranslation = await translateWithCerebras(vietnameseName, 'en');
+                const fiTranslation = await translateWithCerebras(vietnameseName, 'fi');
+                
+                return {
+                    en: enTranslation,
+                    fi: fiTranslation
+                };
+            } catch (error) {
+                console.error('Lỗi dịch tên món ăn:', error);
+                showNotification('Lỗi khi dịch tên món ăn: ' + error.message, 'error');
+                return {
+                    en: vietnameseName + ' (dish)',
+                    fi: vietnameseName + ' (ruoka)'
+                };
+            }
+        }
+
+        // Dịch thành phần món ăn bằng Cerebras API
+        async function translateIngredients(vietnameseIngredients) {
+            if (!vietnameseIngredients.trim()) {
+                return { en: '', fi: '' };
+            }
+            
+            try {
+                const enTranslation = await translateWithCerebras(vietnameseIngredients, 'en');
+                const fiTranslation = await translateWithCerebras(vietnameseIngredients, 'fi');
+                
+                return {
+                    en: enTranslation,
+                    fi: fiTranslation
+                };
+            } catch (error) {
+                console.error('Lỗi dịch thành phần:', error);
+                showNotification('Lỗi khi dịch thành phần: ' + error.message, 'error');
+                return {
+                    en: vietnameseIngredients + ' (ingredients)',
+                    fi: vietnameseIngredients + ' (ainesosat)'
+                };
+            }
+        }
+
+        // Kiểm tra đăng nhập admin
+        function checkAdminLogin() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            return loggedInUser === 'admin';
+        }
+
+        // ============ CHỨC NĂNG QUẢN LÝ USERS VỚI FIREBASE ============
+
+        // Tạo tài khoản mới với phân quyền
+        document.getElementById('createUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.remove('hidden');
+
+            setTimeout(async () => {
+                const newUsername = document.getElementById('newUsername').value.trim();
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const userRole = document.getElementById('userRole').value;
+
+                if (!newUsername || !newPassword || !userRole) {
+                    showNotification('Vui lòng nhập đầy đủ thông tin và chọn quyền!', 'warning');
+                    loadingOverlay.classList.add('hidden');
+                    return;
+                }
+
+                try {
+                    // Kiểm tra xem user đã tồn tại chưa
+                    const userDoc = await getDoc(doc(db, "users", newUsername));
+                    
+                    if (userDoc.exists()) {
+                        showModal(`Tên đăng nhập "${newUsername}" đã tồn tại. Bạn có muốn cập nhật mật khẩu không?`, async function() {
+                            await updateDoc(doc(db, "users", newUsername), {
+                                password: newPassword,
+                                role: userRole
+                            });
+                            await loadUsers();
+                            document.getElementById('createUserForm').reset();
+                            showNotification('Cập nhật mật khẩu thành công!', 'success');
+                            loadingOverlay.classList.add('hidden');
+                        });
+                        return;
+                    }
+
+                    // Tạo user mới
+                    await setDoc(doc(db, "users", newUsername), {
+                        username: newUsername,
+                        password: newPassword,
+                        role: userRole
+                    });
+                    
+                    await loadUsers();
+                    document.getElementById('createUserForm').reset();
+                    showNotification('Tạo tài khoản thành công!', 'success');
+                } catch (error) {
+                    console.error('Lỗi:', error);
+                    showNotification('Lỗi khi tạo tài khoản: ' + error.message, 'error');
+                } finally {
+                    if (!document.querySelector('#modalOverlay.show')) {
+                        loadingOverlay.classList.add('hidden');
+                    }
+                }
+            }, 500);
+        });
+
+        // Xóa tài khoản
+        async function deleteUser(username) {
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            showModal(`Bạn có chắc chắn muốn xóa tài khoản "${username}"?`, async function() {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                loadingOverlay.classList.remove('hidden');
+
+                setTimeout(async () => {
+                    try {
+                        await deleteDoc(doc(db, "users", username));
+                        await loadUsers();
+                        showNotification('Xóa tài khoản thành công!', 'success');
+                    } catch (error) {
+                        console.error('Lỗi:', error);
+                        showNotification('Lỗi khi xóa tài khoản: ' + error.message, 'error');
+                    } finally {
+                        loadingOverlay.classList.add('hidden');
+                    }
+                }, 500);
+            });
+        }
+
+        // Làm mới danh sách users
+        document.getElementById('refreshUsers').addEventListener('click', async function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.remove('hidden');
+            
+            setTimeout(async () => {
+                await loadUsers();
+                showNotification('Đã làm mới danh sách tài khoản!', 'info');
+                loadingOverlay.classList.add('hidden');
+            }, 500);
+        });
+
+        // Đọc danh sách tài khoản từ Firebase
+        async function loadUsers() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                const userLines = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    userLines.push(`${userData.username}:${userData.password}:${userData.role}`);
+                });
+                
+                displayUsers(userLines);
+            } catch (error) {
+                console.error('Lỗi khi tải danh sách users:', error);
+                document.getElementById('userList').innerHTML = 
+                    '<p style="color: red;">Lỗi: Không thể đọc dữ liệu người dùng</p>';
+            }
+        }
+
+        // Hiển thị danh sách tài khoản với quyền
+        function displayUsers(userLines) {
+            let html = '<table class="user-table">';
+            html += '<tr><th>Tên đăng nhập</th><th>Mật khẩu</th><th>Quyền</th><th>Thao tác</th></tr>';
+            
+            userLines.forEach((line, index) => {
+                const [username, password, role] = line.split(':');
+                if (username && password) {
+                    const roleName = getRoleName(role || 'customer');
+                    html += `
+                        <tr>
+                            <td>${username}</td>
+                            <td>${password}</td>
+                            <td>${roleName}</td>
+                            <td>
+                                ${username !== 'admin' ? 
+                                    `<button onclick="deleteUser('${username}')" class="delete-btn">Xóa</button>` : 
+                                    'Không thể xóa'
+                                }
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+            
+            html += '</table>';
+            document.getElementById('userList').innerHTML = html;
+        }
+
+        // Hàm chuyển đổi role code thành tên hiển thị
+        function getRoleName(roleCode) {
+            const roles = {
+                'admin': 'Quản trị viên',
+                'manager': 'Quản lý',
+                'cashier': 'Thu ngân',
+                'customer': 'Khách hàng'
+            };
+            return roles[roleCode] || 'Khách hàng';
+        }
+
+        // ============ CHỨC NĂNG QUẢN LÝ SẢN PHẨM VỚI JSON FILE ============
+
+        // Lấy dữ liệu sản phẩm từ menuData (JSON)
+        function getProducts() {
+            return menuData;
+        }
+
+        // Lưu dữ liệu sản phẩm vào menuData (JSON)
+        function saveProducts(products) {
+            menuData = products;
+            showNotification('Menu đã được cập nhật trong bộ nhớ!', 'success');
+        }
+
+        // Xuất menu (tải file xuống)
+        function exportMenu() {
+            try {
+                const jsonData = JSON.stringify(menuData, null, 2);
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'menu.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification('Menu đã được xuất thành công!', 'success');
+            } catch (error) {
+                showNotification('Lỗi khi xuất menu: ' + error.message, 'error');
+            }
+        }
+
+        // Nhập menu từ file
+        function importMenu() {
+            try {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const jsonData = event.target.result;
+                            const products = JSON.parse(jsonData);
+                            menuData = products;
+                            displayProducts();
+                            updateProductStats();
+                            showNotification('Menu đã được nhập thành công!', 'success');
+                        } catch (error) {
+                            showNotification('Lỗi khi nhập menu: File không hợp lệ', 'error');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            } catch (error) {
+                showNotification('Lỗi khi nhập menu: ' + error.message, 'error');
+            }
+        }
+
+        // Hiển thị danh sách sản phẩm từ menuData
+        function displayProducts(productsToShow = null) {
+            const products = productsToShow || menuData;
+            const productsList = document.getElementById('products-list');
+            
+            if (products.length === 0) {
+                productsList.innerHTML = '<p>Chưa có món ăn nào trong menu.</p>';
+                return;
+            }
+            
+            productsList.innerHTML = products.map((product, index) => `
+                <div class="product-card">
+                    ${product.image ? `<img src="${product.image}" class="product-image" alt="${product.name.vi}">` : 
+                      '<div style="height:200px;background:#ddd;display:flex;align-items:center;justify-content:center;border-radius:5px;margin-bottom:10px;color:#000;">Không có hình ảnh</div>'}
+                    <div class="language-names">
+                        <div class="language-name">VN: ${product.name.vi}</div>
+                        <div class="language-name">EN: ${product.name.en || 'Chưa dịch'}</div>
+                        <div class="language-name">FI: ${product.name.fi || 'Chưa dịch'}</div>
+                    </div>
+                    <div class="product-price">Giá: ${product.price} ${product.currency}</div>
+                    <div class="product-category">Loại: ${product.category}</div>
+                    <div class="product-ingredients">Thành phần VN: ${product.ingredients.vi}</div>
+                    <div class="product-ingredients">Thành phần EN: ${product.ingredients.en || 'Chưa dịch'}</div>
+                    <div class="product-ingredients">Thành phần FI: ${product.ingredients.fi || 'Chưa dịch'}</div>
+                    <button class="edit-btn" onclick="editProduct(${index})">Sửa</button>
+                    <button class="delete-btn" onclick="deleteProduct(${index})">Xóa</button>
+                </div>
+            `).join('');
+        }
+
+        // Xóa sản phẩm
+        function deleteProduct(index) {
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            showModal('Bạn có chắc chắn muốn xóa món ăn này?', function() {
+                menuData.splice(index, 1);
+                displayProducts();
+                updateProductStats();
+                showNotification('Xóa món ăn thành công!', 'success');
+            });
+        }
+
+        // Sửa sản phẩm
+        function editProduct(index) {
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            const product = menuData[index];
+            
+            document.getElementById('name-vi').value = product.name.vi || '';
+            document.getElementById('name-en').value = product.name.en || '';
+            document.getElementById('name-fi').value = product.name.fi || '';
+            document.getElementById('price').value = product.price || '';
+            document.getElementById('currency').value = product.currency || '€';
+            document.getElementById('category').value = product.category || '';
+            document.getElementById('ingredients-vi').value = product.ingredients.vi || '';
+            document.getElementById('ingredients-en').value = product.ingredients.en || '';
+            document.getElementById('ingredients-fi').value = product.ingredients.fi || '';
+            
+            currentEditingProductId = index;
+
+            const submitBtn = document.querySelector('#productForm button[type="submit"]');
+            submitBtn.textContent = 'Cập nhật Món Ăn';
+            
+            showNotification('Đang chỉnh sửa món ăn...', 'info');
+            window.scrollTo(0, document.getElementById('productForm').offsetTop);
+        }
+
+        // Cập nhật sản phẩm
+        async function updateProduct(index) {
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            const nameVi = document.getElementById('name-vi').value;
+            const nameEn = document.getElementById('name-en').value;
+            const nameFi = document.getElementById('name-fi').value;
+            const price = document.getElementById('price').value;
+            const currency = document.getElementById('currency').value;
+            const category = document.getElementById('category').value;
+            const ingredientsVi = document.getElementById('ingredients-vi').value;
+            const ingredientsEn = document.getElementById('ingredients-en').value;
+            const ingredientsFi = document.getElementById('ingredients-fi').value;
+            
+            const updatedProduct = {
+                name: { vi: nameVi, en: nameEn, fi: nameFi },
+                price: parseFloat(price),
+                currency: currency,
+                category: category,
+                ingredients: { vi: ingredientsVi, en: ingredientsEn, fi: ingredientsFi },
+                image: menuData[index].image // Giữ nguyên ảnh cũ
+            };
+            
+            menuData[index] = updatedProduct;
+            
+            showNotification('Cập nhật món ăn thành công!', 'success');
+            document.getElementById('productForm').reset();
+            
+            const submitBtn = document.querySelector('#productForm button[type="submit"]');
+            submitBtn.textContent = 'Thêm Món Ăn';
+            currentEditingProductId = null;
+            
+            displayProducts();
+            updateProductStats();
+        }
+
+        // Thêm sản phẩm mới
+        async function addNewProduct() {
+            if (!checkAdminLogin()) {
+                showNotification('Bạn cần đăng nhập với tài khoản admin!', 'error');
+                setTimeout(() => showLoadingAndNavigate('login.html'), 2000);
+                return;
+            }
+
+            const nameVi = document.getElementById('name-vi').value;
+            const nameEn = document.getElementById('name-en').value;
+            const nameFi = document.getElementById('name-fi').value;
+            const price = document.getElementById('price').value;
+            const currency = document.getElementById('currency').value;
+            const category = document.getElementById('category').value;
+            const ingredientsVi = document.getElementById('ingredients-vi').value;
+            const ingredientsEn = document.getElementById('ingredients-en').value;
+            const ingredientsFi = document.getElementById('ingredients-fi').value;
+            
+            if (!nameVi || !nameEn || !nameFi || !price || !currency || !category || 
+                !ingredientsVi || !ingredientsEn || !ingredientsFi) {
+                showNotification('Vui lòng nhập đầy đủ thông tin!', 'warning');
+                return;
+            }
+            
+            const newProduct = {
+                name: { vi: nameVi, en: nameEn, fi: nameFi },
+                price: parseFloat(price),
+                currency: currency,
+                category: category,
+                ingredients: { vi: ingredientsVi, en: ingredientsEn, fi: ingredientsFi },
+                image: null
+            };
+            
+            menuData.push(newProduct);
+            document.getElementById('productForm').reset();
+            showNotification('Thêm món ăn thành công!', 'success');
+            displayProducts();
+            updateProductStats();
+        }
+
+        // Xử lý form thêm/sửa sản phẩm
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (currentEditingProductId !== null) {
+                await updateProduct(currentEditingProductId);
+            } else {
+                await addNewProduct();
+            }
+        });
+
+        // Tìm kiếm sản phẩm
+        function searchProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                displayProducts();
+                return;
+            }
+            
+            const filteredProducts = menuData.filter(product => 
+                (product.name.vi && product.name.vi.toLowerCase().includes(searchTerm)) ||
+                (product.name.en && product.name.en.toLowerCase().includes(searchTerm)) ||
+                (product.name.fi && product.name.fi.toLowerCase().includes(searchTerm)) ||
+                (product.category && product.category.toLowerCase().includes(searchTerm)) ||
+                (product.ingredients.vi && product.ingredients.vi.toLowerCase().includes(searchTerm)) ||
+                (product.ingredients.en && product.ingredients.en.toLowerCase().includes(searchTerm)) ||
+                (product.ingredients.fi && product.ingredients.fi.toLowerCase().includes(searchTerm))
+            );
+            
+            displayProducts(filteredProducts);
+        }
+
+        // Lọc sản phẩm theo loại
+        function filterProducts() {
+            const categoryFilter = document.getElementById('category-filter').value;
+            
+            if (categoryFilter === '') {
+                displayProducts();
+                return;
+            }
+            
+            const filteredProducts = menuData.filter(product => 
+                product.category === categoryFilter
+            );
+            
+            displayProducts(filteredProducts);
+        }
+
+        // Cập nhật thống kê sản phẩm
+        function updateProductStats() {
+            const totalProducts = menuData.length;
+            const categories = [...new Set(menuData.map(product => product.category))];
+            const totalCategories = categories.length;
+            
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalCategories').textContent = totalCategories;
+        }
+
+        // Tải danh sách sản phẩm
+        function loadProducts() {
+            displayProducts();
+            updateProductStats();
+            showNotification('Đã làm mới danh sách sản phẩm!', 'info');
+        }
+
+        // Tải danh sách users và sản phẩm khi trang load
+        window.addEventListener('load', async function () {
+            await loadUsers();
+            displayProducts();
+            updateProductStats();
+            
+            translateDishNameOnEnter();
+            translateIngredientsOnEnter();
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    if (checkAdminLogin()) {
+                        showNotification('Chào mừng đến trang quản trị!', 'info');
+                    }
+                }, 500);
+            }
+        });
+
+        // GÁN CÁC HÀM RA GLOBAL ĐỂ HTML CÓ THỂ GỌI ĐƯỢC
+        window.logout = logout;
+        window.showTab = showTab;
+        window.closeNotification = closeNotification;
+        window.showAddCategoryModal = showAddCategoryModal;
+        window.deleteUser = deleteUser;
+        window.searchProducts = searchProducts;
+        window.filterProducts = filterProducts;
+        window.loadProducts = loadProducts;
+        window.exportMenu = exportMenu;
+        window.importMenu = importMenu;
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+    </script>
+</body>
+</html>
