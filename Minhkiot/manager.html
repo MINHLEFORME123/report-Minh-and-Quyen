@@ -1,0 +1,84 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager - Báo cáo</title>
+    <link rel="stylesheet" href="manager.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="loadingOverlay" class="loading-overlay">
+        <img src="logo.png" class="loading-logo" alt="Loading...">
+    </div>
+
+    <div id="mainApp" class="main-app">
+        <header>
+            <h1>Báo cáo Doanh thu</h1>
+        </header>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h2>Thống kê Hôm nay</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Tổng doanh thu</h3>
+                    <p id="revenue-total-today">0€</p>
+                </div>
+                <div class="stat-card">
+                    <h3>So với Hôm qua</h3>
+                    <p id="revenue-vs-yesterday">0€ <span id="yesterday-change" class="change-indicator"></span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>So với Tuần trước</h3>
+                    <p id="revenue-vs-lastweek">0€ <span id="lastweek-change" class="change-indicator"></span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Số đơn hoàn thành</h3>
+                    <p id="order-count-today">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button id="tab-today" class="tab-button active">Biểu đồ Hôm nay</button>
+            <button id="tab-monthly" class="tab-button">Biểu đồ Theo tháng</button>
+        </div>
+
+        <!-- Chart Container -->
+        <section class="chart-section">
+            <div id="chart-container">
+                <canvas id="dailyRevenueChart"></canvas>
+                <canvas id="monthlyRevenueChart" style="display: none;"></canvas>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h2>Tìm kiếm Hóa đơn Hoàn thành</h2>
+            <div class="date-range-picker">
+                <label for="dateStart">Từ ngày:</label>
+                <input type="date" id="dateStart">
+                <label for="dateEnd">Đến ngày:</label>
+                <input type="date" id="dateEnd">
+                <button id="searchBtn">Tìm kiếm</button>
+                <button id="resetBtn">Xem Hôm Nay</button> 
+            </div>
+            <div id="search-results-summary" class="search-summary"></div>
+        </div>
+
+        <!-- Orders List -->
+        <main id="orderListContainer" class="order-list-container">
+            <h2 id="order-list-title">Chi tiết đơn hàng</h2>
+            <div id="orders-list">
+                <p>Chọn ngày hoặc xem mặc định hôm nay.</p>
+            </div>
+        </main>
+
+    </div>
+
+    <script type="module" src="manager.js"></script>
+</body>
+</html>
