@@ -1,0 +1,54 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>Manager</title>
+    <link rel="stylesheet" href="manager.css">
+</head>
+<body>
+
+    <div id="mainApp" class="main-app">
+        <header>
+            <h1>Báo cáo Doanh thu Hôm nay</h1>
+            <p>(Chỉ tính các đơn hàng đã "Hoàn thành")</p>
+            <!-- Nút đăng xuất -->
+            <button id="logoutBtn" class="logout-btn">Đăng xuất</button>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Tổng doanh thu</h3>
+                <p id="revenue-total">0€</p>
+            </div>
+            <div class="stat-card">
+                <h3>Số đơn hoàn thành</h3>
+                <p id="order-count">0</p>
+            </div>
+        </div>
+
+        <main id="orderListContainer" class="order-list-container">
+            <h2>Chi tiết các đơn đã hoàn thành</h2>
+            <div id="completed-orders-list">
+                <p>Đang tải dữ liệu...</p>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="manager.js"></script>
+    
+    <script>
+        // Xử lý đăng xuất
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Xóa token hoặc thông tin đăng nhập nếu có
+            localStorage.removeItem('authToken'); // Nếu bạn sử dụng localStorage
+            // hoặc sessionStorage.removeItem('authToken');
+            
+            // Chuyển hướng về trang index.html
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

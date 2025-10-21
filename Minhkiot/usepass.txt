@@ -1,0 +1,7 @@
+
+admin:admin123:admin
+manager1:manager123:manager
+cashier1:cashier123:cashier
+customer1:customer123:customer
+user1:pass123:customer
+user2:password2:customer

@@ -1,0 +1,1109 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: white;
+    color: #333;
+    min-height: 100vh;
+    padding: 15px;
+}
+
+/* Language Selection Screen */
+.language-selection-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #00cc99, #0099ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.language-selection-content {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 400px;
+}
+
+.language-selection-content h1 {
+    color: #0066cc;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    line-height: 1.3;
+}
+
+.language-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.language-btn {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #0066cc, #0099ff);
+    color: white;
+    width: 100%;
+}
+
+.language-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 100, 255, 0.4);
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 100, 255, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.restaurant-name {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #0066cc;
+    text-shadow: 1px 1px 2px rgba(0, 100, 255, 0.2);
+}
+
+.language-selector {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.language-selector label {
+    font-weight: bold;
+    color: #0066cc;
+    font-size: 0.9em;
+}
+
+.language-selector select {
+    padding: 8px 12px;
+    border: 2px solid #0066cc;
+    border-radius: 20px;
+    background: white;
+    color: #0066cc;
+    font-weight: bold;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.language-selector select:hover {
+    background: #0066cc;
+    color: white;
+}
+
+.fullscreen-btn {
+    padding: 8px 15px;
+    background: linear-gradient(45deg, #0066cc, #0099ff);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 100, 255, 0.3);
+    white-space: nowrap;
+}
+
+.fullscreen-btn:hover {
+    background: linear-gradient(45deg, #0099ff, #0066cc);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 100, 255, 0.4);
+}
+
+/* Categories */
+.categories-section {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.section-title {
+    font-size: 1.4em;
+    color: #0066cc;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-card {
+    background: white;
+    border: 2px solid #0066cc;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 100, 255, 0.1);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 100, 255, 0.2);
+    background: #0066cc;
+    color: white;
+}
+
+.category-name {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #0066cc;
+}
+
+.category-card:hover .category-name {
+    color: white;
+}
+
+/* Products - Very Small Size (4-5 per row) */
+.products-section {
+    margin-bottom: 20px;
+    flex: 2;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 5px;
+}
+
+/* For smaller screens - 4 per row */
+@media (max-width: 1200px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.product-card-uniform {
+    background: white;
+    border: 1px solid #0066cc;
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 100, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: pointer;
+}
+
+.product-card-uniform:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 100, 255, 0.15);
+}
+
+.product-image-container {
+    margin-bottom: 6px;
+}
+
+.product-image-uniform {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #0066cc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.product-image-uniform:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+.product-info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.product-name-uniform {
+    font-size: 0.75em;
+    font-weight: bold;
+    color: #0066cc;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.product-price-uniform {
+    font-size: 0.7em;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+/* Cart */
+.cart-section {
+    background: white;
+    border: 1px solid #0066cc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 3px 10px rgba(0, 100, 255, 0.1);
+    flex: 1;
+}
+
+.cart-items {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #e6f3ff;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-info {
+    flex: 1;
+    text-align: left;
+}
+
+.cart-item-name {
+    font-weight: bold;
+    color: #0066cc;
+    margin-bottom: 2px;
+    font-size: 0.8em;
+}
+
+.cart-item-note {
+    font-size: 0.65em;
+    color: #ff6600;
+    font-style: italic;
+    margin-bottom: 2px;
+}
+
+.cart-item-price {
+    font-size: 0.7em;
+    color: #666;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-btn {
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.cart-total {
+    font-size: 1em;
+    font-weight: bold;
+    color: #0066cc;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.checkout-btn {
+    padding: 8px 15px;
+    background: linear-gradient(45deg, #ff6600, #ff9900);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.checkout-btn:hover {
+    background: linear-gradient(45deg, #ff9900, #ff6600);
+    transform: translateY(-1px);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 400px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #0066cc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    color: #0066cc;
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: #ff6600;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+.product-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-detail-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #0066cc;
+}
+
+.product-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-detail-price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+.product-detail-ingredients {
+    font-size: 0.8em;
+    color: #666;
+    line-height: 1.4;
+}
+
+.note-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #0066cc;
+    border-radius: 6px;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.note-input::placeholder {
+    color: #999;
+}
+
+.order-review-item {
+    padding: 8px;
+    border-bottom: 1px solid #e6f3ff;
+    margin-bottom: 8px;
+}
+
+.order-review-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.order-review-name {
+    font-weight: bold;
+    color: #0066cc;
+    margin-bottom: 3px;
+    font-size: 0.85em;
+}
+
+.order-review-note {
+    font-size: 0.7em;
+    color: #ff6600;
+    font-style: italic;
+    margin-bottom: 3px;
+}
+
+.order-review-details {
+    font-size: 0.75em;
+    color: #666;
+}
+
+.payment-methods {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #0066cc;
+}
+
+.payment-methods h3 {
+    color: #0066cc;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.payment-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #0066cc;
+    border-radius: 8px;
+    font-size: 0.8em;
+    background: white;
+    color: #0066cc;
+}
+
+.modal-footer {
+    padding: 15px;
+    border-top: 1px solid #0066cc;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8em;
+    min-width: 100px;
+}
+
+.cancel-btn {
+    background: linear-gradient(45deg, #999999, #cccccc);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: linear-gradient(45deg, #cccccc, #999999);
+    transform: translateY(-1px);
+}
+
+.confirm-btn {
+    background: linear-gradient(45deg, #00cc66, #00ff99);
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: linear-gradient(45deg, #00ff99, #00cc66);
+    transform: translateY(-1px);
+}
+
+.add-to-cart-btn {
+    padding: 8px 12px;
+    background: linear-gradient(45deg, #00cc99, #00ffcc);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 0.8em;
+}
+
+.add-to-cart-btn:hover {
+    background: linear-gradient(45deg, #00ffcc, #00cc99);
+    transform: translateY(-1px);
+}
+
+.confirm-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* iPad Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    body {
+        padding: 12px;
+        background-color: white;
+    }
+    
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: white;
+    }
+    
+    .header {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .restaurant-name {
+        font-size: 1.4em;
+    }
+    
+    .section-title {
+        font-size: 1.2em;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    
+    .category-card {
+        padding: 10px;
+        min-height: 55px;
+    }
+    
+    .category-name {
+        font-size: 0.8em;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        padding: 4px;
+    }
+    
+    .product-card-uniform {
+        padding: 6px;
+    }
+    
+    .product-image-uniform {
+        height: 55px;
+    }
+    
+    .product-name-uniform {
+        font-size: 0.7em;
+    }
+    
+    .product-price-uniform {
+        font-size: 0.65em;
+    }
+    
+    .cart-section {
+        padding: 12px;
+    }
+    
+    .cart-items {
+        max-height: 120px;
+    }
+    
+    .cart-item {
+        padding: 6px;
+    }
+    
+    .cart-item-name {
+        font-size: 0.75em;
+    }
+    
+    .cart-total {
+        font-size: 0.9em;
+    }
+    
+    .checkout-btn {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    
+    .language-selector select,
+    .fullscreen-btn {
+        padding: 6px 10px;
+        font-size: 0.75em;
+    }
+    
+    .modal {
+        width: 90%;
+        max-width: 350px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.1em;
+    }
+}
+
+/* Landscape iPad */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    body {
+        padding: 8px;
+        background-color: white;
+    }
+    
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: white;
+    }
+    
+    .header {
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+    
+    .restaurant-name {
+        font-size: 1.3em;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+        gap: 6px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        padding: 4px;
+    }
+    
+    .cart-section {
+        padding: 12px;
+    }
+    
+    .cart-items {
+        max-height: 100px;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+    body {
+        padding: 8px;
+        background-color: white;
+    }
+    
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px;
+    }
+    
+    .restaurant-name {
+        font-size: 1.3em;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 6px;
+    }
+    
+    .category-card {
+        padding: 8px;
+        min-height: 50px;
+    }
+    
+    .category-name {
+        font-size: 0.75em;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+        padding: 3px;
+    }
+    
+    .product-card-uniform {
+        padding: 5px;
+    }
+    
+    .product-image-uniform {
+        height: 50px;
+    }
+    
+    .product-name-uniform {
+        font-size: 0.65em;
+    }
+    
+    .product-price-uniform {
+        font-size: 0.6em;
+    }
+    
+    .cart-section {
+        padding: 10px;
+    }
+    
+    .cart-items {
+        max-height: 120px;
+    }
+    
+    .cart-item {
+        padding: 5px;
+    }
+    
+    .cart-item-name {
+        font-size: 0.7em;
+    }
+    
+    .cart-total {
+        font-size: 0.9em;
+    }
+    
+    .checkout-btn {
+        padding: 6px 10px;
+        font-size: 0.75em;
+    }
+    
+    .language-selector select,
+    .fullscreen-btn {
+        padding: 5px 8px;
+        font-size: 0.7em;
+    }
+    
+    .section-title {
+        font-size: 1.1em;
+    }
+    
+    .modal {
+        width: 95%;
+        margin: 5px;
+        max-height: 80vh;
+    }
+    
+    .modal-header h2 {
+        font-size: 1em;
+    }
+    
+    .modal-body {
+        padding: 12px;
+    }
+    
+    .modal-footer {
+        padding: 12px;
+        flex-direction: column;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        padding: 8px 15px;
+        font-size: 0.75em;
+    }
+    
+    .payment-methods h3 {
+        font-size: 0.9em;
+    }
+    
+    .payment-select {
+        padding: 6px;
+        font-size: 0.75em;
+    }
+    
+    .product-detail-image {
+        height: 120px;
+    }
+    
+    .note-input {
+        padding: 6px;
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 480px) {
+    .restaurant-name {
+        font-size: 1.2em;
+    }
+    
+    .section-title {
+        font-size: 1em;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    }
+    
+    .category-card {
+        padding: 6px;
+        min-height: 45px;
+    }
+    
+    .category-name {
+        font-size: 0.7em;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        padding: 2px;
+    }
+    
+    .product-card-uniform {
+        padding: 4px;
+    }
+    
+    .product-image-uniform {
+        height: 45px;
+    }
+    
+    .product-name-uniform {
+        font-size: 0.6em;
+    }
+    
+    .product-price-uniform {
+        font-size: 0.55em;
+    }
+    
+    .cart-total {
+        font-size: 0.85em;
+    }
+    
+    .modal-header h2 {
+        font-size: 0.95em;
+    }
+    
+    .payment-methods h3 {
+        font-size: 0.85em;
+    }
+    
+    .payment-select {
+        padding: 5px;
+        font-size: 0.7em;
+    }
+    
+    .product-detail-image {
+        height: 100px;
+    }
+    
+    .note-input {
+        padding: 5px;
+        font-size: 0.65em;
+    }
+}
+
+.restaurant-logo .logo-image {
+    height: 50px;
+    width: auto;
+}
+
+.header-logo {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+/* Language Selection Screen */
+.language-selection-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.language-selection-content {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.language-selection-content h1 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 24px;
+}
+
+.welcome-text {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.language-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.language-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.language-btn:hover {
+    background-color: #2980b9;
+}
+/* ===== BẮT ĐẦU CODE MỚI: CSS CHO BẢN ĐỒ BÀN ===== */
+
+.table-modal {
+    max-width: 800px; /* Tăng kích thước modal cho bản đồ */
+    width: 90%;
+}
+
+.table-map-container {
+    position: relative; /* Quan trọng để định vị các ô tròn */
+    width: 100%;
+    margin: 0 auto;
+}
+
+.table-map-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0.8; /* Làm mờ ảnh nền một chút */
+}
+
+.table-select-spot {
+    position: absolute;
+    /* KHÔNG DÙNG padding-bottom nữa, sẽ dùng width/height trực tiếp */
+    
+    background: transparent; /* NỀN HOÀN TOÀN TRONG SUỐT */
+    color: transparent; /* CHỮ CŨNG TRONG SUỐT (hoặc không cần hiển thị chữ) */
+    /* font-weight: bold; */ /* Có thể xóa */
+    /* font-size: 1.5vw; */ /* Có thể xóa */
+    
+    display: block; /* Dùng block thay vì flex nếu không cần căn giữa chữ */
+    /* align-items: center; */ /* Có thể xóa */
+    /* justify-content: center; */ /* Có thể xóa */
+    
+    border-radius: 0; /* KHÔNG TRÒN NỮA, LÀ HÌNH VUÔNG/CHỮ NHẬT */
+    border: 2px solid transparent; /* VIỀN TRONG SUỐT BAN ĐẦU */
+    /* box-shadow: none; */ /* Có thể xóa */
+    
+    transform: none; /* KHÔNG CẦN CĂN GIỮA NỮA, TOP/LEFT SẼ LÀ GÓC TRÊN BÊN TRÁI */
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.table-select-spot:hover {
+    background: rgba(0, 132, 255, 0.2); /* HIỆN MỘT LỚP MÀU NHẸ KHI DI CHUỘT VÀO */
+    border: 2px solid rgba(0, 132, 255, 0.7); /* VIỀN XANH KHI DI CHUỘT VÀO */
+    transform: scale(1.02); /* PHÓNG TO NHẸ MỘT CHÚT */
+    box-shadow: 0 0 10px rgba(0, 132, 255, 0.5); /* BÓNG ĐỔ */
+}
+
+/* @media (max-width: 600px) { ... } */ /* Có thể xóa phần font-size */
+
+/* Điều chỉnh font-size cho màn hình nhỏ */
+@media (max-width: 600px) {
+    .table-select-spot {
+        font-size: 2.5vw;
+    }
+}
+/* ===== KẾT THÚC CODE MỚI ===== */
+/* ===== CSS CHO NÚT TAKEAWAY ===== */
+.takeaway-option-container {
+    text-align: center;
+    padding: 20px 10px 10px 10px;
+    border-top: 2px dashed #eee; /* Tạo vạch ngăn cách */
+    margin-top: 20px;
+}
+
+.takeaway-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ff6600, #ff9900);
+    border: none;
+    border-radius: 50px; /* Bo tròn */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 100, 0, 0.4);
+}
+
+.takeaway-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 100, 0, 0.6);
+}
+
+.takeaway-btn .takeaway-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+/* ===== KẾT THÚC CSS NÚT TAKEAWAY ===== */
